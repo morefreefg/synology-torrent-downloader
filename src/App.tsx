@@ -1,56 +1,39 @@
-import { Switch, Route } from '@modern-js/runtime/router';
+import { Main } from '@/main'
+import { SettingsIcon } from '@/settings/settings-icon'
+import { SettingsPage } from '@/settings/settings-page'
+import { Switch, Route, Redirect } from '@modern-js/runtime/router'
+import { Router } from 'react-router-dom';
 
-import './App.css';
+import history from '@/history';
+
+import './App.css'
+import '@arco-design/web-react/dist/css/arco.css'
+
+function MainPage() {
+    return <div className="container-box">
+        <header style={{ width: '100%' }}>
+            <SettingsIcon/>
+        </header>
+        <main>
+            <Main />
+        </main>
+    </div>
+}
+
+function RootRoute() {
+    return <div>
+        <Switch>
+            <Route path='/main' component={MainPage} />
+            <Route path="/settings" component={SettingsPage} />
+        </Switch>
+    </div>
+}
 
 const App = () => (
-  <Switch>
-    <Route exact={true} path="/">
-      <div className="container-box">
-        <main>
-          <div className="logo">
-            <img
-              src="https://lf3-static.bytednsdoc.com/obj/eden-cn/ylaelkeh7nuhfnuhf/modernjs-cover.png"
-              width="300"
-              alt="Modern.js Logo"
-            />
-          </div>
-          <p className="description">
-            Get started by editing <code className="code">src/App.tsx</code>
-          </p>
-          <div className="grid">
-            <a href="https://modernjs.dev/docs/start" className="card">
-              <h2>Quick Start</h2>
-            </a>
-            <a href="https://modernjs.dev/docs/guides" className="card">
-              <h2>Handbook</h2>
-            </a>
-            <a href="https://modernjs.dev/docs/apis" className="card">
-              <h2>API Reference </h2>
-            </a>
-            <a
-              href="https://modernjs.dev/coming-soon"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="card">
-              <h2>Community </h2>
-            </a>
-          </div>
-        </main>
-        <footer className="footer">
-          <a
-            href="https://modernjs.dev"
-            target="_blank"
-            rel="noopener noreferrer">
-            Powered by Modern.js
-          </a>
-        </footer>
-      </div>
+        <Router history={history}>
+            <Route path="/" component={RootRoute} />
+            <Redirect push={true} to={`/main`} />
+        </Router>
+)
 
-    </Route>
-    <Route path="*">
-      <div>404</div>
-    </Route>
-  </Switch>
-);
-
-export default App;
+export default App

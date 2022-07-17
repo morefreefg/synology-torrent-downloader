@@ -11,6 +11,21 @@ export default defineConfig({
       supportHtml5History: process.env.NODE_ENV === 'development',
     },
   },
+  tools: {
+    babel: {
+      plugins: [
+        // [
+        //   'babel-plugin-import',
+        //   {
+        //     libraryName: '@arco-design/web-react',
+        //     libraryDirectory: 'es',
+        //     camel2DashComponentName: false,
+        //     style: true, // 样式按需加载
+        //   },
+        // ],
+      ],
+    },
+  },
   electron: {
     builder: {
       baseConfig: {
