@@ -117,7 +117,9 @@ export function SettingsPage() {
                     <Button htmlType='submit' type="primary">Save</Button>
                 </FormItem>
 
-                <Button type="dashed" onClick={testLogin}>Test Connection</Button>
+                <FormItem wrapperCol={{offset: 5}}>
+                    <Button type="dashed" onClick={testLogin}>Test Connection</Button>
+                </FormItem>
             </Form>
         </main>}
     </div>
