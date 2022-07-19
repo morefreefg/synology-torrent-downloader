@@ -61,7 +61,7 @@ export function Main() {
         }
         {
             torrent && <Card title={"Auto-Detected Result"} style={{ marginTop: 10 }} hoverable>
-                <ParseResult parseReuslt={torrent}/>
+                <ParseResult parseResult={torrent}/>
             </Card>
         }
     </div>

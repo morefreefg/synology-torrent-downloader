@@ -24,7 +24,6 @@ export function TVShows(props: { parseResult: Torrent }) {
     }, [])
 
     useEffect(() => {
-        setPathPrefix('/Unraid')
         if (parseResult.isMovie) {
             setName('')
             setSeason('')

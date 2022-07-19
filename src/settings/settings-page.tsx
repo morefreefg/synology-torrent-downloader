@@ -1,11 +1,32 @@
 import HISTORY from '@/history'
 import {IconBackward} from '@arco-design/web-react/icon'
 import {Form, Input, Button, Message} from '@arco-design/web-react'
-import {saveFileSaveLocation, saveSynologyConnectionParams} from "@/storage/storage";
+import {
+    getFileSaveLocation,
+    getSynologyConnectionParams,
+    saveFileSaveLocation,
+    saveSynologyConnectionParams
+} from "@/storage/storage";
+import {useEffect, useState} from "react";
 
 const FormItem = Form.Item
 
 export function SettingsPage() {
+
+    const [initialValues, setInitialValues] = useState<any|undefined>(undefined)
+
+    useEffect(() => {
+        const filelocation = getFileSaveLocation()
+        const connection = getSynologyConnectionParams()
+
+        setInitialValues( {
+            host: connection?.url,
+            username: connection?.username,
+            password: connection?.password,
+            movie_location: filelocation?.movies ?? '',
+            tv_show_location: filelocation?.tvshows ?? '',
+        })
+    }, [])
 
     function onSubmit(values: any) {
         saveFileSaveLocation({
@@ -39,8 +60,8 @@ export function SettingsPage() {
             </Button>
         </header>
 
-        <main>
-            <Form style={{width: 800}} onSubmit={onSubmit}>
+        {initialValues && <main>
+            <Form style={{width: 800}} initialValues={initialValues} onSubmit={onSubmit}>
                 <FormItem field={"host"} label="Host">
                     <Input placeholder="eg: http://cloud.fengguang.me:5000"/>
                 </FormItem>
@@ -65,6 +86,6 @@ export function SettingsPage() {
                     <Button htmlType='submit' type="primary">Submit</Button>
                 </FormItem>
             </Form>
-        </main>
+        </main>}
     </div>
 }
