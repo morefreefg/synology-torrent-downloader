@@ -1,19 +1,20 @@
 import HISTORY from '@/history'
-import {IconBackward} from '@arco-design/web-react/icon'
-import {Form, Input, Button, Message} from '@arco-design/web-react'
+import {IconBackward, IconLoading} from '@arco-design/web-react/icon'
+import {Form, Input, Button, Message, Modal} from '@arco-design/web-react'
 import {
     getFileSaveLocation,
     getSynologyConnectionParams,
     saveFileSaveLocation,
     saveSynologyConnectionParams
 } from "@/storage/storage";
-import {useEffect, useState} from "react";
+import React, {ReactNode, useEffect, useState} from "react";
+import bridge from '@modern-js/runtime/electron-bridge';
 
 const FormItem = Form.Item
 
 export function SettingsPage() {
-
     const [initialValues, setInitialValues] = useState<any|undefined>(undefined)
+
 
     useEffect(() => {
         const filelocation = getFileSaveLocation()
@@ -43,6 +44,35 @@ export function SettingsPage() {
         Message.success("Successfully saved")
     }
 
+    const formRef = React.useRef<ReactNode>(null);
+
+    function testLogin() {
+        Modal.info({
+            title: 'Verifying connection',
+            footer: null,
+            content: <div
+                style={{ display: 'flex', width: 'auto',
+                    alignItems: 'center', justifyContent: 'center' }}>
+                <IconLoading />
+            </div>,
+        });
+
+        // @ts-ignore
+        const value = formRef.current.getFieldsValue()
+        // @ts-ignore
+        bridge.testSynologyLogin(value.username, value.password, value.host)
+            .then(() => {
+                Message.success("Connection successful!")
+            })
+            .catch((e) => {
+                console.error(e)
+                Message.error(`Failed: ${e.message ?? e.msg}`,)
+            })
+            .finally(() => {
+                Modal.destroyAll()
+            })
+    }
+
     return <div style={{width: '100%', height: '100%'}}>
         <header style={{width: '100%'}}>
             <Button style={{
@@ -61,7 +91,8 @@ export function SettingsPage() {
         </header>
 
         {initialValues && <main>
-            <Form style={{width: 800}} initialValues={initialValues} onSubmit={onSubmit}>
+            <Form ref={(ref) => (formRef.current = ref)}
+                  style={{width: 800}} initialValues={initialValues} onSubmit={onSubmit}>
                 <FormItem field={"host"} label="Host">
                     <Input placeholder="eg: http://cloud.fengguang.me:5000"/>
                 </FormItem>
@@ -83,8 +114,10 @@ export function SettingsPage() {
                 </FormItem>
 
                 <FormItem wrapperCol={{offset: 5}}>
-                    <Button htmlType='submit' type="primary">Submit</Button>
+                    <Button htmlType='submit' type="primary">Save</Button>
                 </FormItem>
+
+                <Button type="dashed" onClick={testLogin}>Test Connection</Button>
             </Form>
         </main>}
     </div>

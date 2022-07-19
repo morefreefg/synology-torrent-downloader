@@ -3,6 +3,7 @@ import {
     browserWindowPreloadApis,
 } from '@modern-js/runtime/electron-render';
 import * as fs from 'fs'
+import {testSynologyLogin} from "./synology";
 
 export const apis = {
     ...browserWindowPreloadApis,
@@ -11,6 +12,9 @@ export const apis = {
     },
     listFiles: (path: string) => {
         return fs.readdirSync(path)
+    },
+    testSynologyLogin: (username: string, password: string, url: string) => {
+        return testSynologyLogin(username, password, url);
     }
 };
 
