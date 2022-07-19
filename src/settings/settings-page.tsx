@@ -1,13 +1,29 @@
 import HISTORY from '@/history'
-import { IconBackward } from '@arco-design/web-react/icon'
-import { Form, Input, Button } from '@arco-design/web-react'
+import {IconBackward} from '@arco-design/web-react/icon'
+import {Form, Input, Button, Message} from '@arco-design/web-react'
+import {saveFileSaveLocation, saveSynologyConnectionParams} from "@/storage/storage";
 
 const FormItem = Form.Item
 
 export function SettingsPage() {
 
-    return <div style={{ width: '100%', height: '100%' }}>
-        <header style={{ width: '100%' }}>
+    function onSubmit(values: any) {
+        saveFileSaveLocation({
+            movies: values.movie_location,
+            tvshows: values.tv_show_location,
+        })
+
+        saveSynologyConnectionParams({
+            url: values.host,
+            username: values.username,
+            password: values.password,
+        })
+
+        Message.success("Successfully saved")
+    }
+
+    return <div style={{width: '100%', height: '100%'}}>
+        <header style={{width: '100%'}}>
             <Button style={{
                 width: 45,
                 height: 45,
@@ -19,37 +35,34 @@ export function SettingsPage() {
                 // window.location.href = '/';
             }}
             >
-                <IconBackward style={{ width: 50, height: 50 }} />
+                <IconBackward style={{width: 50, height: 50}}/>
             </Button>
         </header>
 
         <main>
-            <Form style={{ width: 800 }}>
-                <FormItem label="Host">
-                    <Input placeholder="like: http://cloud.fengguang.me:5000" />
+            <Form style={{width: 800}} onSubmit={onSubmit}>
+                <FormItem field={"host"} label="Host">
+                    <Input placeholder="eg: http://cloud.fengguang.me:5000"/>
                 </FormItem>
 
-                <FormItem label="UserName">
-                    <Input placeholder="please enter your Synology username..." />
+                <FormItem field={"username"} label="UserName">
+                    <Input placeholder="please enter your Synology username..."/>
                 </FormItem>
 
-                <FormItem label="Password">
-                    <Input type={'password'} placeholder="please enter your Synology Password..." />
+                <FormItem field={"password"} label="Password">
+                    <Input type={'password'} placeholder="please enter your Synology Password..."/>
                 </FormItem>
 
-                <FormItem label={<div style={{ whiteSpace: 'nowrap' }}>Movies Download To</div>}>
-                    <Input placeholder="like: /Movies/" />
+                <FormItem field={"movie_location"} label={<div style={{whiteSpace: 'nowrap'}}>Movies Download To</div>}>
+                    <Input placeholder="eg: /Movies/"/>
                 </FormItem>
 
-                <FormItem label={<div style={{ whiteSpace: 'nowrap' }}>TVShows Download To</div>}>
-                    <Input placeholder="like: /TVShows/" />
+                <FormItem field={"tv_show_location"} label={<div style={{whiteSpace: 'nowrap'}}>TVShows Download To</div>}>
+                    <Input placeholder="eg: /TVShows/"/>
                 </FormItem>
 
-                {/*<FormItem wrapperCol={{ offset: 5 }}>*/}
-                {/*    <Checkbox>I have read the manual</Checkbox>*/}
-                {/*</FormItem>*/}
-                <FormItem wrapperCol={{ offset: 5 }}>
-                    <Button type="primary">Submit</Button>
+                <FormItem wrapperCol={{offset: 5}}>
+                    <Button htmlType='submit' type="primary">Submit</Button>
                 </FormItem>
             </Form>
         </main>
