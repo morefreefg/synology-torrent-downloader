@@ -7,8 +7,8 @@ import { Movies } from './Movies'
 const RadioGroup = Radio.Group
 
 
-export function ParseResult(props: { parseReuslt: Torrent }) {
-    const { parseReuslt } = props
+export function ParseResult(props: { parseResult: Torrent }) {
+    const { parseResult } = props
 
     const [value, setValue] = useState<string>('movies')
 
@@ -17,12 +17,12 @@ export function ParseResult(props: { parseReuslt: Torrent }) {
     }
 
     useEffect(() => {
-        if (parseReuslt.isMovie) {
+        if (parseResult.isMovie) {
             setValue('movies')
         } else {
             setValue('tvshows')
         }
-    }, [parseReuslt.raw])
+    }, [parseResult.raw])
 
     return (
         <div>
@@ -32,12 +32,12 @@ export function ParseResult(props: { parseReuslt: Torrent }) {
                         onChange={onChange} value={value}>
                 <Radio value="movies">
                     <Card style={{ display: 'inline-block' }}>
-                        <Movies parseResult={props.parseReuslt} />
+                        <Movies parseResult={props.parseResult} />
                     </Card>
                 </Radio>
                 <Radio style={{ marginTop: 10 }} value="tvshows">
                     <Card style={{ display: 'inline-block' }}>
-                        <TVShows parseResult={props.parseReuslt} />
+                        <TVShows parseResult={props.parseResult} />
                     </Card>
                 </Radio>
             </RadioGroup>

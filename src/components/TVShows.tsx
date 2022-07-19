@@ -2,6 +2,7 @@ import { Torrent } from '@/torrent/Torrent'
 import { Input, Tag } from '@arco-design/web-react'
 import { IconDownload } from '@arco-design/web-react/icon'
 import { useEffect, useState } from 'react'
+import {getFileSaveLocation} from "@/storage/storage";
 
 function formatSeason(season: number): string {
     if (season < 10) {
@@ -17,6 +18,10 @@ export function TVShows(props: { parseResult: Torrent }) {
     const [pathPrefix, setPathPrefix] = useState('')
     const [name, setName] = useState('')
     const [season, setSeason] = useState('')
+
+    useEffect(() => {
+        setPathPrefix(getFileSaveLocation()?.tvshows ?? '')
+    }, [])
 
     useEffect(() => {
         setPathPrefix('/Unraid')
