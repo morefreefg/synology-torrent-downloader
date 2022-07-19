@@ -8,6 +8,7 @@ import history from '@/history';
 
 import './App.css'
 import '@arco-design/web-react/dist/css/arco.css'
+import {LoginProvider} from "@/provider/LoginProvider";
 
 function MainPage() {
     return <div className="container-box">
@@ -31,8 +32,10 @@ function RootRoute() {
 
 const App = () => (
         <Router history={history}>
-            <Route path="/" component={RootRoute} />
-            <Redirect push={true} to={`/main`} />
+            <LoginProvider>
+                <Route path="/" component={RootRoute} />
+                <Redirect push={true} to={`/main`} />
+            </LoginProvider>
         </Router>
 )
 
