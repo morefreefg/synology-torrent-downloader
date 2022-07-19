@@ -26,7 +26,7 @@ export function ParseResult(props: { parseResult: Torrent }) {
 
     return (
         <div>
-            <div>You can change the auto-detected info as you wish</div>
+            <div>Wanna download to?</div>
             <RadioGroup style={{ marginTop: 10 }}
                         direction={'vertical'}
                         onChange={onChange} value={value}>

@@ -1,8 +1,9 @@
 import { DragToUpload } from '@/components/DragToUpload'
 import { ParseResult } from '@/components/ParseResult'
 import { Torrent } from '@/torrent/Torrent'
-import { Card, Descriptions } from '@arco-design/web-react'
+import {Button, Card, Descriptions} from '@arco-design/web-react'
 import { useEffect, useState } from 'react'
+import {IconDownload} from "@arco-design/web-react/icon";
 
 const ptt = require('parse-torrent-title')
 
@@ -15,12 +16,8 @@ function transformTitle(title: string): string {
 }
 
 function isMovies(result: Torrent):boolean {
-    if ((result.season ?? 0 > 0)
-        && (result.episode ?? 0 > 0)) {
-        return false
-    } else {
-        return true
-    }
+    return !((result.season ?? 0 > 0)
+        && (result.episode ?? 0 > 0));
 }
 
 function parse(name: string): Torrent {
@@ -60,9 +57,12 @@ export function Main() {
             </Card>
         }
         {
-            torrent && <Card title={"Auto-Detected Result"} style={{ marginTop: 10 }} hoverable>
+            torrent && <Card title={"Download To"} style={{ marginTop: 10 }} hoverable>
                 <ParseResult parseResult={torrent}/>
             </Card>
+        }
+        {
+            <Button style={{ marginTop: 30 , width: 300}} type={'outline'}><IconDownload/>Download</Button>
         }
     </div>
 }
