@@ -16,6 +16,7 @@ const runtime = new Runtime({
         webPreferences: {
           enableRemoteModule: true,
           preload: PRELOAD_JS,
+          webSecurity: false
         },
       },
     },
