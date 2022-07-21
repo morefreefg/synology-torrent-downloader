@@ -20,13 +20,19 @@ export function LoginProvider(props: any) {
         HISTORY.push('/settings');
     }
 
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() =>{
-        bridge.testSynologyLogin(connection?.username ?? '', connection?.password ?? '', connection?.url ?? '')
-            .then(() => {
-                setLoading(false)
-            })
+        if (connection?.url?.length??0 > 0) {
+            setLoading(true)
+            bridge.testSynologyLogin(connection?.username ?? '', connection?.password ?? '', connection?.url ?? '')
+                .then(() => {
+                    setLoading(false)
+                })
+                .catch(e => {
+                    setLoading(false)
+                })
+        }
     }, [])
 
     return loading ?<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '400px'}}>
