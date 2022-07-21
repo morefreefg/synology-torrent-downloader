@@ -5,12 +5,13 @@ import {useEffect, useState} from "react";
 import {getFileSaveLocation} from "@/storage/storage";
 
 
-export function Movies(props: { parseResult: Torrent}) {
+export function Movies(props: { parseResult: Torrent, onChange: (value: string) => void}) {
 
     const [pathPrefix, setPathPrefix] = useState('')
 
     useEffect(() => {
         setPathPrefix(getFileSaveLocation()?.movies ?? '')
+        props.onChange(getFileSaveLocation()?.movies ?? '')
     }, [])
 
 

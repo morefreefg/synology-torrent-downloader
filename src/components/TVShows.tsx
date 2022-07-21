@@ -12,7 +12,7 @@ function formatSeason(season: number): string {
     }
 }
 
-export function TVShows(props: { parseResult: Torrent }) {
+export function TVShows(props: { parseResult: Torrent, onChange: (value: string) => void }) {
     const { parseResult } = props
 
     const [pathPrefix, setPathPrefix] = useState('')
@@ -32,6 +32,10 @@ export function TVShows(props: { parseResult: Torrent }) {
             setSeason(formatSeason(parseResult.season))
         }
     }, [parseResult.raw])
+
+    useEffect(() => {
+        props.onChange(pathPrefix + '/' + name + '/' + season)
+    }, [pathPrefix, name, season])
 
     return <div style={{ display: 'flex', flexDirection: 'column' }}>
         {/*<div style={{ display: 'flex', flexDirection: 'row'}}>*/}
