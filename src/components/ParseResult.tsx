@@ -1,7 +1,7 @@
 import { TVShows } from '@/components/TVShows'
 import { Torrent } from '@/torrent/Torrent'
 import { Card, Radio } from '@arco-design/web-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Movies } from './Movies'
 
 const RadioGroup = Radio.Group
@@ -19,11 +19,18 @@ export function ParseResult(props: { parseResult: Torrent, onParseChanged: (para
     const [movieLocation, setMovieLocation] = useState('')
     const [tvShowsLocation, setTvVShowsLocation] = useState('')
 
+    const valueCurrent = useRef(value)
+    const movieLocationCurrent = useRef(movieLocation)
+    const tvShowsLocationCurrent = useRef(tvShowsLocation)
+    valueCurrent.current = value
+    movieLocationCurrent.current = movieLocation
+    tvShowsLocationCurrent.current = tvShowsLocation
+
     const onChange = (e: any) => {
         if (e == 'tvshows') {
-            onParseChanged({ type: 'tvshows', downloadLocation: movieLocation })
+            onParseChanged({ type: 'tvshows', downloadLocation: movieLocationCurrent.current })
         } else if (e === 'movies') {
-            onParseChanged({ type: 'movies', downloadLocation: tvShowsLocation })
+            onParseChanged({ type: 'movies', downloadLocation: tvShowsLocationCurrent.current })
         }
 
         setValue(e)
@@ -36,6 +43,10 @@ export function ParseResult(props: { parseResult: Torrent, onParseChanged: (para
             setValue('tvshows')
         }
     }, [parseResult.raw])
+
+    useEffect(() => {
+        onChange(valueCurrent.current)
+    }, [movieLocation, tvShowsLocation, value])
 
     return (
         <div>

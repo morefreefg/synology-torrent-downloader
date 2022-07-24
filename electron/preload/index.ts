@@ -3,7 +3,10 @@ import {
     browserWindowPreloadApis,
 } from '@modern-js/runtime/electron-render';
 import * as fs from 'fs'
-import {testSynologyLogin} from "./synology";
+import { DownloadParam } from '../../src/components/ParseResult'
+import { SynologyConnectionParams } from '../../src/storage/storage'
+import { downloadActually } from './download'
+import {synologyLogin} from "./synology";
 
 export const apis = {
     ...browserWindowPreloadApis,
@@ -14,7 +17,10 @@ export const apis = {
         return fs.readdirSync(path)
     },
     testSynologyLogin: (username: string, password: string, url: string) => {
-        return testSynologyLogin(username, password, url);
+        return synologyLogin(username, password, url);
+    },
+    download: (torrentFilePath: string, downloadParam: DownloadParam, loginParam: SynologyConnectionParams) => {
+        return downloadActually(torrentFilePath, downloadParam, loginParam);
     }
 };
 

@@ -1,4 +1,4 @@
-const Synology = require('@ltaoo/synology/index');
+const Synology = require('./synology/index');
 
 function parseHostAndPortFromUrl(url: string) {
     if (!url.includes(':')) {
@@ -24,10 +24,9 @@ function parseHostAndPortFromUrl(url: string) {
     return {host, port};
 }
 
-export async function testSynologyLogin(username: string,
-                              password: string,
-                              url: string) {
-
+export async function synologyLogin(username: string,
+                                    password: string,
+                                    url: string): Promise<any> {
     const parsed = parseHostAndPortFromUrl(url)
     const options = {
         protocol: url.startsWith("https") ? "https" : "http",
@@ -40,4 +39,5 @@ export async function testSynologyLogin(username: string,
     const synology = new Synology(options);
 
     await synology.Auth.auth({username, password,});
+    return synology
 }
